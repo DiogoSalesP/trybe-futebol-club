@@ -11,9 +11,18 @@ const getUser = async (user: IUser) => {
   if (!data || !compareSync(password as string, data.password)) {
     throw new HttpException(httpStatusCode.tokenNotFound, 'Incorrect email or password');
   }
-  return jwt.createToken(data);
+  const token = jwt.createToken(data);
+  return { token, data };
+};
+
+const getUserByRole = async (user: IUser) => {
+  const { email } = user;
+  const data = await Model.findOne({ where: { email } });
+  if (!data) throw new HttpException(httpStatusCode.notFound, 'User not found ');
+  return data;
 };
 
 export default {
   getUser,
+  getUserByRole,
 };

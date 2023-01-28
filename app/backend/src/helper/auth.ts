@@ -1,35 +1,35 @@
-// import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-// import HttpException from '../utils/HttpException';
-// import httpStatusCode from '../utils/httpsStatusCode';
+import HttpException from '../utils/HttpException';
+import httpStatusCode from '../utils/httpsStatusCode';
 import { IUser } from '../interfaces/IUser';
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET || 'jwt_secret';
 
 const createToken = (user: IUser) => {
-  const payload = { id: user.id, email: user.email };
-  return jwt.sign({ payload }, secret as string, { expiresIn: '45m', algorithm: 'HS256' });
+  const payload = { id: user.id, email: user.email, role: user.role };
+  return jwt.sign(payload, secret, { expiresIn: '45m', algorithm: 'HS256' });
 };
 
-// const auth = (req: Request, res: Response, next: NextFunction) => {
-//   const { authorization: token } = req.headers;
+const validaToken = (req: Request, _res: Response, next: NextFunction) => {
+  const { authorization } = req.headers;
 
-//   if (!token) {
-//     throw new HttpException(httpStatusCode.tokenNotFound, 'Token not found');
-//   }
+  if (!authorization) {
+    throw new HttpException(httpStatusCode.tokenNotFound, 'Token not found');
+  }
 
-//   let payload;
-//   try {
-//     payload = jwt.verify(token as string, secret);
-//     req.body.use = payload;
-//     next();
-//   } catch (err) {
-//     console.log(err);
-//     throw new HttpException(httpStatusCode.tokenNotFound, 'Error');
-//   }
-// };
+  let payload;
+  try {
+    payload = jwt.verify(authorization, secret);
+    req.body.use = payload;
+    next();
+  } catch (err) {
+    console.log(err);
+    throw new HttpException(httpStatusCode.tokenNotFound, 'Erro validate');
+  }
+};
 
 export default {
   createToken,
-  // auth,
+  validaToken,
 };

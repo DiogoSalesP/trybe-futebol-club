@@ -4,8 +4,17 @@ import Service from '../services/user';
 
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = await Service.getUser(req.body);
+    const { token } = await Service.getUser(req.body);
     res.status(httpStatusCode.ok).json({ token });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getUserByRole = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { role } = req.body.use;
+    res.status(httpStatusCode.ok).json({ role });
   } catch (err) {
     next(err);
   }
@@ -13,4 +22,5 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
 
 export default {
   getUser,
+  getUserByRole,
 };
