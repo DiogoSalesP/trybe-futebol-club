@@ -8,9 +8,8 @@ import httpStatusCode from '../utils/httpsStatusCode';
 const getUser = async (user: IUser) => {
   const { email, password } = user;
   const data = await Model.findOne({ where: { email } });
-  if (!data) throw new HttpException(httpStatusCode.notFound, 'email not registered');
-  if (!compareSync(password as string, data.password)) {
-    throw new HttpException(httpStatusCode.notFound, 'password not found');
+  if (!data || !compareSync(password as string, data.password)) {
+    throw new HttpException(httpStatusCode.tokenNotFound, 'Incorrect email or password');
   }
   return jwt.createToken(data);
 };

@@ -10,7 +10,7 @@ const { expect } = chai;
 
 describe('POST /login', () => {
   describe('e-mail not informed', () => {
-    it('should return status 404', async () => {
+    it('should return status 400', async () => {
       const httpResponse = await chai
         .request(app)
         .post('/login')
@@ -20,7 +20,7 @@ describe('POST /login', () => {
     })
   })
   describe('password not informed', () => {
-    it('should return status 404', async () => {
+    it('should return status 400', async () => {
       const httpResponse = await chai
         .request(app)
         .post('/login')
@@ -30,23 +30,23 @@ describe('POST /login', () => {
     })
   })
   describe('e-mail not found', () => {
-    it('should return status 404', async () => {
+    it('should return status 401', async () => {
       const httpResponse = await chai
         .request(app)
         .post('/login')
         .send({ email: 'admin@admim.com', password: 'secret_admin'})
-      expect(httpResponse.status).to.equal(404)
-      expect(httpResponse.body).to.deep.equal({message: "email not registered"})
+      expect(httpResponse.status).to.equal(401)
+      expect(httpResponse.body).to.deep.equal({message: "Incorrect email or password"})
     })
   })
   describe('password not found', () => {
-    it('should return status 404', async () => {
+    it('should return status 401', async () => {
       const httpResponse = await chai
         .request(app)
         .post('/login')
         .send({ email: 'admin@admin.com', password: 'secretAdmin'})
-      expect(httpResponse.status).to.equal(404)
-      expect(httpResponse.body).to.deep.equal({message: "password not found"})
+      expect(httpResponse.status).to.equal(401)
+      expect(httpResponse.body).to.deep.equal({message: "Incorrect email or password"})
     })
   })
   describe('successful request', () => {
