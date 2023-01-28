@@ -15,8 +15,8 @@ describe('POST /login', () => {
         .request(app)
         .post('/login')
         .send({ password: 'secret_admin'})
-      expect(httpResponse.status).to.equal(404)
-      expect(httpResponse.body).to.deep.equal({message: "\"email\"/\"password\" is required"})
+      expect(httpResponse.status).to.equal(400)
+      expect(httpResponse.body).to.deep.equal({message: "All fields must be filled"})
     })
   })
   describe('password not informed', () => {
@@ -25,8 +25,8 @@ describe('POST /login', () => {
         .request(app)
         .post('/login')
         .send({ email: 'admin@admin.com'})
-      expect(httpResponse.status).to.equal(404)
-      expect(httpResponse.body).to.deep.equal({message: "\"email\"/\"password\" is required"})
+      expect(httpResponse.status).to.equal(400)
+      expect(httpResponse.body).to.deep.equal({message: "All fields must be filled"})
     })
   })
   describe('e-mail not found', () => {

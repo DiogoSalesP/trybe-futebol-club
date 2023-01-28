@@ -5,8 +5,8 @@ const login = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
-      .status(httpStatusCode.notFound)
-      .json({ message: '"email"/"password" is required' });
+      .status(httpStatusCode.badRequest)
+      .json({ message: 'All fields must be filled' });
   }
 
   next();
