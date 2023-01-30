@@ -1,6 +1,7 @@
 import * as express from 'express';
 import UsersRouter from './routes/user';
 import TeamsRouter from './routes/team';
+import MatchesRouter from './routes/match';
 import httpErrorMiddleware from './middlewares/http.error.middleware';
 
 class App {
@@ -20,6 +21,7 @@ class App {
   private routes(): void {
     this.app.use('/login', UsersRouter);
     this.app.use('/teams', TeamsRouter);
+    this.app.use('/matches', MatchesRouter);
   }
 
   private config():void {
