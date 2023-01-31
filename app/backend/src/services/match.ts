@@ -6,7 +6,24 @@ const getListOfMatches = async () => {
     include: [
       { model: ModelTeam, as: 'homeTeam' },
       { model: ModelTeam, as: 'awayTeam' },
+    ],
+  });
+  return result;
+};
 
+const strToBool = (str: string) => {
+  if (str === 'true') return true;
+  if (str === 'false') return false;
+};
+
+const getInProgress = async (query: string) => {
+  if (query === undefined) return getListOfMatches();
+  const inProgress = strToBool(query);
+  const result = await ModelMatch.findAll({
+    where: { inProgress },
+    include: [
+      { model: ModelTeam, as: 'homeTeam' },
+      { model: ModelTeam, as: 'awayTeam' },
     ],
   });
   return result;
@@ -14,4 +31,5 @@ const getListOfMatches = async () => {
 
 export default {
   getListOfMatches,
+  getInProgress,
 };
