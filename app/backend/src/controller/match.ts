@@ -27,8 +27,16 @@ const changeStatusInProgress = async (req: Request, res: Response) => {
   res.status(httpStatusCode.ok).json(result);
 };
 
+const updateMatch = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+  const { body } = req;
+  const data = await Service.updateMatch(id, body);
+  res.status(httpStatusCode.ok).json(data);
+};
+
 export default {
   getListOfMatches,
   saveMatch,
   changeStatusInProgress,
+  updateMatch,
 };

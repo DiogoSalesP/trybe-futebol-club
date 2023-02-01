@@ -9,13 +9,6 @@ const strToBool = (str: string) => {
   if (str === 'false') return false;
 };
 
-// const getTeam = async (homeTeamId: number, homeTeamId: number) => {
-//   const result = await ModelTeam.findByPk(homeTeamId);
-//   if (result === null) {
-//     throw new HttpException(httpStatusCode.unprocessableEntity, 'There is no team with such id!');
-//   }
-// };
-
 const getListOfMatches = async () => {
   const result = await ModelMatch.findAll({
     include: [
@@ -67,9 +60,18 @@ const changeStatusInProgress = async (id: number) => {
   return { message: 'Finished' };
 };
 
+const updateMatch = async (id: number, match: IMach) => {
+  const { homeTeamGoals, awayTeamGoals } = match;
+  const result = await ModelMatch.update({ homeTeamGoals, awayTeamGoals }, {
+    where: { id },
+  });
+  return result;
+};
+
 export default {
   getListOfMatches,
   getInProgress,
   saveMatch,
   changeStatusInProgress,
+  updateMatch,
 };
